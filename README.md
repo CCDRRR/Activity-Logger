@@ -1,15 +1,23 @@
-# Mouse and Keyboard Activity Logger
-This Python script logs mouse and keyboard activity over a specified duration. 
-It records mouse movements, clicks, and keyboard presses at regular intervals and saves the data to a CSV file.
+# Activity and Audio Logger
+This program logs mouse movements, mouse clicks, keyboard hits, and audio data (peak frequency and wavelength). The data is saved into a CSV file at regular intervals. A Tkinter GUI provides a button to stop the logging process and displays elapsed and remaining time.
+
+## Features
+* Logs mouse movements, clicks, and keyboard hits.
+* Records audio data and analyzes peak frequency and wavelength.
+* Saves the collected data into a CSV file at specified intervals.
+* Provides a Tkinter GUI for stopping the logging and displaying time information.
 
 ## Requirements
 * Python 3x
+* pyaudio
+* numpy
+* scipy
 * pynput
 * tkinter
 
 You can install the required packages using pip:  
 ```sh
-pip install pynput tkinter
+pip install pyaudio numpy scipy pynput tkinter
 ```
 ## Usage
 Run the script with command line
@@ -34,6 +42,8 @@ The script generates a CSV file with the following columns:
 * mouse_distance: The distance the mouse moved since the last log entry.
 * mouse_clicks: The number of mouse clicks since the last log entry.
 * keyboard_hits: The number of keyboard presses since the last log entry.
+* audio_peak_freq: The peak frequency of the recorded audio.
+* audio_wavelength: The wavelength corresponding to the peak frequency.
   
 
 ## Notes
