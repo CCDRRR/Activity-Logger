@@ -29,6 +29,7 @@ mouse_x = 0
 mouse_y = 0
 audio_peak_freq = 0
 audio_wavelength = 0
+audio_amplitude = 0
 
 # Last mouse position
 last_mouse_position = None
@@ -66,16 +67,18 @@ def on_press(key):
 
 # Function to analyze audio data
 def analyze_audio_data(data):
+    global audio_amplitude
     audio_data = np.frombuffer(data, dtype=np.int16)
     fft_data = np.abs(scipy.fftpack.fft(audio_data))
     freqs = np.fft.fftfreq(len(fft_data)) * RATE
     peak_freq = abs(freqs[np.argmax(fft_data)])
     wavelength = RATE / peak_freq if peak_freq > 0 else 0
+    audio_amplitude = np.max(np.abs(audio_data))
     return peak_freq, wavelength
 
 # Function to record and analyze audio
 def record_audio():
-    global running, audio_peak_freq, audio_wavelength
+    global running, audio_peak_freq, audio_wavelength, audio_amplitude
 
     p = pyaudio.PyAudio()
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
@@ -95,10 +98,10 @@ def record_audio():
 
 # Function to print and save statistics at regular intervals
 def print_and_save_stats(interval, duration, csv_file):
-    global mouse_distance, mouse_clicks, keyboard_hits, running, mouse_x, mouse_y, audio_peak_freq, audio_wavelength
+    global mouse_distance, mouse_clicks, keyboard_hits, running, mouse_x, mouse_y, audio_peak_freq, audio_wavelength, audio_amplitude
     start_time = time.time()
 
-    csv_headers = ['timestamp', 'mouse_x', 'mouse_y', 'mouse_distance', 'mouse_clicks', 'keyboard_hits', 'audio_peak_freq', 'audio_wavelength']
+    csv_headers = ['timestamp', 'mouse_x', 'mouse_y', 'mouse_distance', 'mouse_clicks', 'keyboard_hits', 'audio_peak_freq', 'audio_wavelength', 'audio_amplitude']
     with open(csv_file, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(csv_headers)
@@ -107,8 +110,8 @@ def print_and_save_stats(interval, duration, csv_file):
         time.sleep(interval)
         with lock:
             timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
-            stats = [timestamp, mouse_x, mouse_y, mouse_distance, mouse_clicks, keyboard_hits, audio_peak_freq, audio_wavelength]
-            print(f"time: {timestamp}, mouse_x: {mouse_x}, mouse_y: {mouse_y}, mouse_distance: {mouse_distance:.2f}, mouse_clicks: {mouse_clicks}, keyboard_hits: {keyboard_hits}, audio_peak_freq: {audio_peak_freq:.2f}, audio_wavelength: {audio_wavelength:.2f}")
+            stats = [timestamp, mouse_x, mouse_y, mouse_distance, mouse_clicks, keyboard_hits, audio_peak_freq, audio_wavelength, audio_amplitude]
+            print(f"time: {timestamp}, mouse_x: {mouse_x}, mouse_y: {mouse_y}, mouse_distance: {mouse_distance:.2f}, mouse_clicks: {mouse_clicks}, keyboard_hits: {keyboard_hits}, audio_peak_freq: {audio_peak_freq:.2f}, audio_wavelength: {audio_wavelength:.2f}, audio_amplitude: {audio_amplitude:.2f}")
             with open(csv_file, mode='a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(stats)
