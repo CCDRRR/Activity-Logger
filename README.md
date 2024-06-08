@@ -1,5 +1,5 @@
 # Activity and Audio Logger
-This program logs mouse movements, mouse clicks, keyboard hits, and audio data (peak frequency and wavelength). The data is saved into a CSV file at regular intervals. A Tkinter GUI provides a button to stop the logging process and displays elapsed and remaining time.
+This program logs mouse movements, mouse clicks, keyboard hits, and audio data (peak frequency, wavelength and amplitude). The data is saved into a CSV file at regular intervals. A Tkinter GUI provides a button to stop the logging process and displays elapsed and remaining time.
 
 ## Features
 * Logs mouse movements, clicks, and keyboard hits.
@@ -44,6 +44,7 @@ The script generates a CSV file with the following columns:
 * keyboard_hits: The number of keyboard presses since the last log entry.
 * audio_peak_freq: The peak frequency of the recorded audio.
 * audio_wavelength: The wavelength corresponding to the peak frequency.
+* audio_amplitude: The amplitude of the recorded audio.
   
 
 ## Notes
